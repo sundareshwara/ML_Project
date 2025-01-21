@@ -1,13 +1,25 @@
 import streamlit as st
 import joblib
-import gdown
+import requests
 
-# Google Drive link
-model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
-model_path = '100k_trained_model.pkl'
+# Function to download the model
+def download_model():
+    model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
+    model_path = '100k_trained_model.pkl'
+    
+    # Send a GET request to the URL
+    response = requests.get(model_url, stream=True)
+    
+    # Write the file to disk
+    with open(model_path, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+    
+    return model_path
 
-# Download the model file from Google Drive
-gdown.download(model_url, model_path, quiet=False)
+# Google Drive URL for the model
+model_path = download_model()  # Download the model
 
 # Load the trained model
 model = joblib.load(model_path)
@@ -16,6 +28,8 @@ model = joblib.load(model_path)
 st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
 st.title("Concrete Strength Predictor")
 st.write("🔍 Use this app to predict the compressive strength of concrete based on input parameters.")
+
+# Rest of the app code...
 
 # Sidebar for navigation
 st.sidebar.header("Navigation")
