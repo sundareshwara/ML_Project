@@ -72,13 +72,18 @@ with tab1:
                 float(age)
             ]]
             
-            # Make prediction
-            prediction = model.predict(new_data)
-            
-            # Display the result
-            st.success(f"Predicted Compressive Strength: {prediction[0]:.2f} MPa")
+            # Ensure that the model is loaded and prediction can proceed
+            if model:
+                # Make prediction
+                prediction = model.predict(new_data)
+                # Display the result
+                st.success(f"Predicted Compressive Strength: {prediction[0]:.2f} MPa")
+            else:
+                st.error("Model not loaded. Please try again.")
         except ValueError:
             st.error("Please ensure all inputs are numeric.")
+        except Exception as e:
+            st.error(f"Error during prediction: {str(e)}")
 
 # Tab 2: About the App
 with tab2:
