@@ -1,35 +1,39 @@
 import streamlit as st
 import joblib
+import os
 import requests
 
-# Function to download the model
+# Google Drive link for model download
+model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
+model_path = '100k_trained_model.pkl'
+
+# Function to download the model file from Google Drive
 def download_model():
-    model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
-    model_path = '100k_trained_model.pkl'
-    
-    # Send a GET request to the URL
-    response = requests.get(model_url, stream=True)
-    
-    # Write the file to disk
-    with open(model_path, 'wb') as f:
-        for chunk in response.iter_content(chunk_size=1024):
-            if chunk:
-                f.write(chunk)
-    
-    return model_path
+    try:
+        response = requests.get(model_url)
+        if response.status_code == 200:
+            with open(model_path, 'wb') as f:
+                f.write(response.content)
+            st.success("Model file downloaded successfully!")
+        else:
+            st.error(f"Failed to download model. Status code: {response.status_code}")
+    except Exception as e:
+        st.error(f"Error while downloading the model: {str(e)}")
 
-# Google Drive URL for the model
-model_path = download_model()  # Download the model
+# Check if model already exists, if not, download it
+if not os.path.exists(model_path):
+    download_model()
 
-# Load the trained model
-model = joblib.load(model_path)
+# Load the model using joblib if it exists
+try:
+    model = joblib.load(model_path)
+except Exception as e:
+    st.error(f"Error loading model: {str(e)}")
 
-# Your app code continues here...
+# Streamlit app layout
 st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
 st.title("Concrete Strength Predictor")
 st.write("🔍 Use this app to predict the compressive strength of concrete based on input parameters.")
-
-# Rest of the app code...
 
 # Sidebar for navigation
 st.sidebar.header("Navigation")
