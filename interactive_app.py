@@ -1,39 +1,32 @@
 import streamlit as st
 import joblib
-import os
-import requests
+import gdown
 
-# Set page configuration (must be the first Streamlit command)
-st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
-
-# Google Drive link for model download
+# Google Drive link for the model
 model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
 model_path = '100k_trained_model.pkl'
 
-# Function to download the model file from Google Drive
+# Function to download the model file using gdown
 def download_model():
     try:
-        response = requests.get(model_url)
-        if response.status_code == 200:
-            with open(model_path, 'wb') as f:
-                f.write(response.content)
-            st.success("Model file downloaded successfully!")
-        else:
-            st.error(f"Failed to download model. Status code: {response.status_code}")
+        # Download the model file from Google Drive using gdown
+        gdown.download(model_url, model_path, quiet=False)
+        st.success("Model file downloaded successfully!")
     except Exception as e:
         st.error(f"Error while downloading the model: {str(e)}")
 
-# Check if model already exists, if not, download it
-if not os.path.exists(model_path):
-    download_model()
+# Download the model
+download_model()
 
-# Load the model using joblib if it exists
+# Load the trained model
 try:
     model = joblib.load(model_path)
+    st.success("Model loaded successfully!")
 except Exception as e:
     st.error(f"Error loading model: {str(e)}")
 
-# Streamlit app layout
+# Your app code continues here...
+st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
 st.title("Concrete Strength Predictor")
 st.write("🔍 Use this app to predict the compressive strength of concrete based on input parameters.")
 
@@ -98,3 +91,4 @@ with tab2:
     st.markdown("""
     **Disclaimer**: The predictions provided are for educational purposes only. For precise results, consult with industry experts.
     """)
+
