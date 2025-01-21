@@ -21,7 +21,10 @@ def download_model():
 # Download the model
 download_model()
 
-# Load the trained model
+# Variable to store the model
+model = None
+
+# Load the trained model (move this inside the try-except block)
 try:
     model = joblib.load(model_path)
     st.success("Model loaded successfully!")
