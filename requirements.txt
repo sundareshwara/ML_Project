@@ -1,4 +1,4 @@
-﻿altair==5.5.0
+altair==5.5.0
 asttokens==3.0.0
 attrs==24.3.0
 blinker==1.9.0
@@ -74,3 +74,4 @@ tzdata==2024.2
 urllib3==2.3.0
 watchdog==6.0.0
 wcwidth==0.2.13
+gdown==4.5.0  
