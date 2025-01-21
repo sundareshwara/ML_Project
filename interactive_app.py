@@ -2,6 +2,9 @@ import streamlit as st
 import joblib
 import gdown
 
+# Set page config should be the very first Streamlit command
+st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
+
 # Google Drive link for the model
 model_url = 'https://drive.google.com/uc?export=download&id=102TmWw29JeeV0onEIZIDSK0a0LQwm6Fq'
 model_path = '100k_trained_model.pkl'
@@ -26,7 +29,6 @@ except Exception as e:
     st.error(f"Error loading model: {str(e)}")
 
 # Your app code continues here...
-st.set_page_config(page_title="Concrete Strength Predictor", layout="centered")
 st.title("Concrete Strength Predictor")
 st.write("🔍 Use this app to predict the compressive strength of concrete based on input parameters.")
 
@@ -91,4 +93,3 @@ with tab2:
     st.markdown("""
     **Disclaimer**: The predictions provided are for educational purposes only. For precise results, consult with industry experts.
     """)
-
