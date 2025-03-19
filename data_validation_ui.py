@@ -6,7 +6,11 @@ import joblib
 # -------------------------------------------
 # 🎯 Load the Trained Model
 # -------------------------------------------
-model_path = r"D:\test\code\models\xgboost_finetuned_model.pkl"  # Update with your correct model path
+import os
+import joblib
+
+# Correct model path for Streamlit Cloud
+model_path = os.path.join(os.path.dirname(__file__), "models", "xgboost_finetuned_model.pkl")
 model = joblib.load(model_path)
 
 # -------------------------------------------
